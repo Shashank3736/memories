@@ -9,17 +9,20 @@ import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import Loader from "@/components/shared/Loader"
-import { Link } from "react-router-dom"
-import { useToast } from "@/components/ui/use-toast"
+import { Link, useNavigate } from "react-router-dom"
 import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations"
+import { useToast } from "@/components/ui/use-toast"
+import { useUserContext } from "@/context/AuthContext"
 
 // Actual form
 const SignupForms = () => {
-  const toast = useToast()
+  const { toast } = useToast()
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext()
+  const navigate = useNavigate()
 
-  const { mutateAsync: createUserAccount, isLoading: isCreatingUser } = useCreateUserAccount();
+  const { mutateAsync: createUserAccount, isPending: isCreatingUser } = useCreateUserAccount();
 
-  const { mutateAsync: signInAccount, isLoading: isSigningIn } = useSignInAccount();
+  const { mutateAsync: signInAccount, isPending: isSigningIn } = useSignInAccount();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidation>>({
@@ -38,9 +41,31 @@ const SignupForms = () => {
 
     if(!newUser) {
       return toast({
-        title: "Sign up failed. Please try again!"
+        title: "Sign up failed. Please try again! 44."
       })
-    };
+    }
+
+    const session = await signInAccount({
+      email: values.email,
+      password: values.password
+    })
+
+    if(!session) {
+      return toast({
+        title: "Sign in failed. Please try again! 55"
+      })
+    }
+
+    const isLoggedIn = await checkAuthUser()
+
+    if(isLoggedIn) {
+      form.reset();
+      navigate('/')
+    } else {
+      toast({
+        title: "Sign in failed. Please try again 66!"
+      })
+    }
 
     console.log(newUser)
   }
