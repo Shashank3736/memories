@@ -26,8 +26,6 @@ export async function createUserAccount(user: INewUser) {
         return newUser;
     } catch (error) {
         console.log(28,error);
-
-        return error;
     }
 }
 // 
@@ -81,5 +79,14 @@ export async function getCurrentUser() {
     } catch (error) {
         console.error(error);
         return error;
+    }
+}
+
+export async function signOutAccount() {
+    try {
+        const session = await account.deleteSession("current");
+        return session;
+    } catch (error) {
+        console.error(error);
     }
 }
