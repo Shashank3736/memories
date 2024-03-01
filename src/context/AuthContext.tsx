@@ -62,11 +62,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsLoading(false)
     }
   }
-  // localStorage.getItem('cookieFallback') === null
   // useEffect is a hook that runs after the component is rendered
   // to use this the page everytime reload we need to use useEffect
   useEffect(() => {
-    if(localStorage.getItem('cookieFallback') === '[]') {
+    if(localStorage.getItem('cookieFallback') === '[]' || localStorage.getItem('cookieFallback') === null) {
       navigate('/sign-in')
     }
 
