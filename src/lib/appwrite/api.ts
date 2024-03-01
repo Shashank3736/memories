@@ -61,7 +61,6 @@ export async function signInAccount(user: {
         return session;
     } catch (error) {
         console.error(error);
-        return error;
     }
 }
 
