@@ -17,12 +17,12 @@ import { useUserContext } from "@/context/AuthContext"
 // Actual form
 const SignupForms = () => {
   const { toast } = useToast()
-  const { checkAuthUser, isLoading: isUserLoading } = useUserContext()
+  const { checkAuthUser } = useUserContext()
   const navigate = useNavigate()
 
   const { mutateAsync: createUserAccount, isPending: isCreatingUser } = useCreateUserAccount();
 
-  const { mutateAsync: signInAccount, isPending: isSigningIn } = useSignInAccount();
+  const { mutateAsync: signInAccount } = useSignInAccount();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidation>>({
@@ -134,7 +134,7 @@ const SignupForms = () => {
               <div className="flex-center gap-2">
                 <Loader />  Loading...
               </div>
-            ): "Submit"}
+            ): "Sign up"}
           </Button>
 
           <p className="text-small-regular text-light-2 text-center mt-2">
