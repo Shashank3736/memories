@@ -1,5 +1,5 @@
 import { INewPost, INewUser } from "@/types";
-import { ID, Query } from "appwrite";
+import { ID, Models, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
 export async function createUserAccount(user: INewUser) {
@@ -153,10 +153,6 @@ export async function getFilePreview(fileId: string) {
         const fileUrl = await storage.getFilePreview(
             appwriteConfig.storageID,
             fileId,
-            2000,
-            2000,
-            'top',
-            100
         );
         return fileUrl;
     } catch (error) {
@@ -170,6 +166,95 @@ export async function deleteFile(fileId: string) {
             appwriteConfig.storageID,
             fileId
         );
+        return { status: "ok" };
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function getRecentPosts() {
+    try {
+        const recentPosts = await databases.listDocuments(
+            appwriteConfig.databaseID,
+            appwriteConfig.postCollectionID,
+            [Query.orderDesc("$createdAt"), Query.limit(20)],
+        )
+
+        if(!recentPosts) throw new Error("No posts found");
+        return recentPosts;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function likePost(postId: string, userId: string) {
+    try {
+        const post = await databases.getDocument(
+            appwriteConfig.databaseID,
+            appwriteConfig.postCollectionID,
+            postId
+        )
+
+        if(!post) throw new Error("Post not found");
+
+        let likeList = post.likes.map((user: Models.Document) => user.$id);
+        
+        if(likeList.includes(userId)) {
+            console.log(168, likeList, userId)
+            likeList = likeList.filter((id: string) => id !== userId);
+        } else {
+            likeList.push(userId);
+        }
+
+        console.log(174, likeList, userId)
+
+        const updatedPost = await databases.updateDocument(
+            appwriteConfig.databaseID,
+            appwriteConfig.postCollectionID,
+            postId,
+            {
+                likes: likeList
+            }
+        )
+
+        if(!updatedPost) throw new Error("Post not updated");
+
+        return updatedPost;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function savePost(postId: string, userId: string) {
+    try {
+        const savedPost = await databases.createDocument(
+            appwriteConfig.databaseID,
+            appwriteConfig.savesCollectionID,
+            ID.unique(),
+            {
+                post: postId,
+                user: userId
+            }
+        )
+
+        if(!savedPost) throw new Error("Post not saved");
+
+        return savedPost;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function deleteSavedPost(savedRecordId: string) {
+    try {
+        const deletedPost = await databases.deleteDocument(
+            appwriteConfig.databaseID,
+            appwriteConfig.savesCollectionID,
+            savedRecordId
+        )
+
+        if(!deletedPost) throw new Error("Post not deleted");
+
         return { status: "ok" };
     } catch (error) {
         console.error(error);
