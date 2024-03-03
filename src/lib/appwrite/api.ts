@@ -2,6 +2,42 @@ import { INewPost, INewUser, IUpdatePost } from "@/types";
 import { ID, Models, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
+export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
+    const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(10)];
+
+    if (pageParam) {
+        queries.push(Query.cursorAfter(pageParam.toString()));
+    }
+
+    try {
+        const posts = await databases.listDocuments(
+            appwriteConfig.databaseID,
+            appwriteConfig.postCollectionID,
+            queries
+        )
+
+        if(!posts) throw new Error("No posts found");
+        return posts;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function searchPosts(searchTerm: string) {
+    try {
+        const posts = await databases.listDocuments(
+            appwriteConfig.databaseID,
+            appwriteConfig.postCollectionID,
+            [Query.search('caption', searchTerm)]
+        )
+
+        if(!posts) throw new Error("No posts found");
+        return posts;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export async function createUserAccount(user: INewUser) {
     try {
         const newAccount = await account.create(
