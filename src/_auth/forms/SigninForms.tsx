@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useSignInAccount } from "@/lib/react-query/queriesAndMutations"
 import { useToast } from "@/components/ui/use-toast"
 import { useUserContext } from "@/context/AuthContext"
+import Logo from "@/components/shared/Logo"
 
 // Actual form
 const SigninForms = () => {
@@ -57,7 +58,7 @@ const SigninForms = () => {
     // 3. Render the form.
     <Form {...form}>
       <div className="sm:w-420 flex-center flex-col">
-        <img src="/assets/images/logo.svg" alt="logo" />
+        <Logo />
         <h2 className="h3-bold md:h2-bold">Log in to your account</h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">Welcom back! Enter your details.</p>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 mt-4 w-full">

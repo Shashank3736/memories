@@ -3,6 +3,7 @@ import { Button } from '../ui/button'
 import { useSignOutAccount } from '@/lib/react-query/queriesAndMutations'
 import { useEffect } from 'react'
 import { useUserContext } from '@/context/AuthContext'
+import Logo from './Logo'
 
 const Topbar = () => {
     const { mutate: signOut, isSuccess } = useSignOutAccount()
@@ -18,7 +19,7 @@ const Topbar = () => {
     <section className='topbar'>
         <div className='flex-between py-4 px-5'>
             <Link to='/' className='flex gap-3 items-center'>
-                <img src="/assets/images/logo.svg" alt="logo" width={130} height={325} />
+                <Logo />
             </Link>
             <div className='flex gap-4'>
                 <Button variant="ghost" className='shad-button_ghost' onClick={() => signOut()}>

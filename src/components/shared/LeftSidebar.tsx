@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { useUserContext } from '@/context/AuthContext'
 import { sidebarLinks } from '@/constants'
 import { INavLink } from '@/types'
+import Logo from './Logo'
 
 const LeftSidebar = () => {
     const { mutate: signOut, isSuccess } = useSignOutAccount()
@@ -21,7 +22,7 @@ const LeftSidebar = () => {
     <nav className="leftsidebar">
       <div className="flex flex-col gap-11">
       <Link to='/' className='flex gap-3 items-center'>
-        <img src="/assets/images/logo.svg" alt="logo" width={130} height={325} />
+        <Logo />
       </Link>
       
       {/* Link to profile */}
