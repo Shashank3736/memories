@@ -76,7 +76,7 @@ const SignupForms = () => {
       <div className="sm:w-420 flex-center flex-col">
         <Logo />
         <h2 className="h3-bold md:h2-bold">Create a new account</h2>
-        <p className="text-light-3 small-medium md:base-regular mt-2">To use Snapgram enter your detail</p>
+        <p className="text-light-3 small-medium md:base-regular mt-2">To use Memories enter your detail</p>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 mt-4 w-full">
           <FormField
             control={form.control}
