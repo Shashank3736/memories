@@ -56,7 +56,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
 
   return (
     <div className="flex justify-between z-20 items-center">
-        <div className="flex gap-2">
+        <div className="flex gap-1 mx-2">
             <img 
             src={checkIsLiked(likes, userId) ? "/assets/icons/liked.svg" : "/assets/icons/like.svg"}
             alt="like"
@@ -66,7 +66,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
             className="cursor-pointer" />
             <p>{likes.length}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex mx-2">
             <img 
             src={isSaved ? "/assets/icons/saved.svg" : "/assets/icons/save.svg"}
             alt="save"
