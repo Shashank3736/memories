@@ -18,3 +18,11 @@ export const PostValidation = z.object({
     location: z.string().min(2, { message: "Location must be at least 2 characters." }).max(100),
     tags: z.string().min(2, { message: "Tags must be at least 2 characters." }),
 })
+
+// update profile validation
+export const UpdateProfileValidation = z.object({
+    name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+    username: z.string().min(2, { message: "Name must be at least 2 characters." }),
+    bio: z.string().max(100, { message: "Bio must be less than 100 characters." }),
+    file: z.custom<File[]>().refine((file) => file[0] && file[0].size < 8*1024*1024, { message: "File size must be less than 8MB." })
+})
