@@ -5,11 +5,12 @@ import PostStats from "./PostStats";
 
 type GridPostListProps = {
   posts: Models.Document[];
+  creator?: Models.Document;
   showUser?: boolean;
   showStats?: boolean;
 }
 
-const GridPostList = ({ posts, showUser=true, showStats=true }: GridPostListProps) => {
+const GridPostList = ({ posts, showUser=true, showStats=true, creator }: GridPostListProps) => {
   const { user } = useUserContext()
 
   // console.log(posts)
@@ -24,8 +25,8 @@ const GridPostList = ({ posts, showUser=true, showStats=true }: GridPostListProp
           <div className="grid-post_user">
             {showUser && (
               <div className="flex-center gap-2">
-                <img src={post.creators.imageUrl} alt="profile" className="w-8 h-8 rounded-full" />
-                <p className="text-light-2 text-sm font-medium">{post.creators.name}</p>
+                <img src={creator ? creator.imageUrl : post.creators.imageUrl} alt="profile" className="w-8 h-8 rounded-full" />
+                <p className="text-light-2 text-sm font-medium">{creator ? creator.name: post.creators.name}</p>
               </div>
             )}
             {showStats && <PostStats post={post} userId={user.id} />}
