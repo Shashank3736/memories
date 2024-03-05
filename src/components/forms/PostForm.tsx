@@ -74,6 +74,14 @@ const PostForm = ({ post, action="create" }: PostFormProps) => {
     
     navigate('/')
   }
+
+  const cancel = () => {
+    form.reset()
+    if(post) {
+      return navigate(`/posts/${post.$id}`)
+    }
+    navigate('/')
+  }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-9 w-full max-w-5xl">
@@ -135,7 +143,7 @@ const PostForm = ({ post, action="create" }: PostFormProps) => {
           )}
         />
         <div className="flex gap-4 items-center justify-end">
-            <Button type="button" className="shad-button_dark_4">Cancel</Button>
+            <Button type="button" onClick={cancel} className="shad-button_dark_4">Cancel</Button>
             <Button disabled={isLoadingCreate || isLoadingUpdate} type="submit" className="shad-button_primary whitespace-nowrap">{action == "create" ? 'Create': "Update"} Post</Button>
         </div>
       </form>
